@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     Button userLoginbtn;
     String text1;
     String logindate;
+    String logindate2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +47,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //확인시 시간 정하기
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 logindate = sdf.format(new Date());
+                SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
+                logindate2 = sdf2.format(new Date());
+
                 text1 = userId.getText().toString();
+
 
                 Intent intent_main = new Intent(LoginActivity.this, MainActivity.class);
                 intent_main.putExtra("ID", text1);
@@ -66,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void insertoToDB() {
         InsertData insertData = new InsertData();
-        insertData.execute(text1,logindate,"입실");
+        insertData.execute(text1,logindate,logindate2,"입실");
 
 
     }
@@ -78,7 +83,8 @@ public class LoginActivity extends AppCompatActivity {
 
             String id = strings[0];
             String date = strings[1];
-            String nowSeat = strings[2];
+            String date2 = strings[2];
+            String nowSeat = strings[3];
 
             String link = "http://jbh9022.cafe24.com/insertList.php";
 
@@ -87,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
             RequestBody formBody = new FormBody.Builder()
                     .add("list_ID", id)
                     .add("list_date", date)
+                    .add("list_date2", date2)
                     .add("list_in_out",nowSeat)
                     .build();
 

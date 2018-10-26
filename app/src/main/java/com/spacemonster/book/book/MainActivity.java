@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             img2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     String condate = sdf.format(new Date());
 
                     Intent intent_User = new Intent(MainActivity.this, UserInfoActivity.class);

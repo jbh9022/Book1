@@ -168,13 +168,22 @@
         <LinearLayout
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/user_Intxt"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text=""/>
+                android:text=""
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/user_Intxt2"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
+                android:layout_weight="1"/>
         </LinearLayout>
         <View
             android:layout_width="2dp"
@@ -184,13 +193,22 @@
             android:gravity="center"
             android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/user_OutTxt"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text=""/>
+                android:text=""
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/user_OutTxt2"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
+                android:layout_weight="1"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -6,14 +6,16 @@ public class Post {
     String list_space;
     String list_seatNum;
     String list_date;
+    String list_date2;
     String list_in_out;
 
-    public Post(String list_Num, String list_ID, String list_space, String list_seatNum, String list_date, String list_in_out) {
+    public Post(String list_Num, String list_ID, String list_space, String list_seatNum, String list_date, String list_date2, String list_in_out) {
         this.list_Num = list_Num;
         this.list_ID = list_ID;
         this.list_space = list_space;
         this.list_seatNum = list_seatNum;
         this.list_date = list_date;
+        this.list_date2 = list_date2;
         this.list_in_out = list_in_out;
     }
 
@@ -63,5 +65,9 @@ public class Post {
 
     public void setList_in_out(String list_in_out) {
         this.list_in_out = list_in_out;
+    }
+
+    public String getList_date2() {
+        return list_date2;
     }
 }
