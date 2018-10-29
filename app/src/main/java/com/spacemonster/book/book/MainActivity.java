@@ -2,6 +2,7 @@ package com.spacemonster.book.book;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,12 +13,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.spacemonster.book.book.Adapter.ViewPager_TextAdapter;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import pyxis.uzuki.live.rollingbanner.RollingBanner;
 import pyxis.uzuki.live.rollingbanner.RollingViewPagerAdapter;
@@ -38,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView img4;
     private String textset[] = {"(공지) Test 공지 입니다. Test 공지 입니다. Test 공지 입니다. Test 공지 입니다. "};
     public static Activity Main_Activity;
+    ViewPager main_Viewpager;
     String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +63,13 @@ public class MainActivity extends AppCompatActivity {
         loginLayout = (LinearLayout) findViewById(R.id.main_login);
         loginTxt = (TextView)findViewById(R.id.main_loginTxt);
         userText = (TextView)findViewById(R.id.main_userTxt);
-        mainText1 = (TextView)findViewById(R.id.main_text1);
 
-        mainText1.setSelected(true);
-        mainText1.setText(textset[0]);
+        //공지 뷰
+        main_Viewpager = (ViewPager)findViewById(R.id.main_Textslider);
+        ViewPager_TextAdapter viewPagerAdapter = new ViewPager_TextAdapter(this);
+        main_Viewpager.setAdapter(viewPagerAdapter);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TextTimerTask(), 4000, 5000);
 
     //로그인!!!!
         if(id == null || id.equals("")){
@@ -169,6 +178,22 @@ public class MainActivity extends AppCompatActivity {
             return view;
         }
 
+    }
+    public class TextTimerTask extends TimerTask{
+        @Override
+        public void run() {
+            MainActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(main_Viewpager.getCurrentItem() ==0){
+                        main_Viewpager.setCurrentItem(1);
+                    }
+                    else {
+                        main_Viewpager.setCurrentItem(0);
+                    }
+                }
+            });
+        }
     }
 
 

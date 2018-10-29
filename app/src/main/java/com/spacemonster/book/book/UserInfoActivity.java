@@ -124,7 +124,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 test1();
             }
         });
-        
+
         //복귀
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
