@@ -169,21 +169,22 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
             <TextView
                 android:id="@+id/user_Intxt"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text=""
-                android:layout_weight="1"/>
+                android:textSize="25dp"/>
             <TextView
                 android:id="@+id/user_Intxt2"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text=""
-                android:layout_weight="1"/>
+                android:textSize="25dp"/>
         </LinearLayout>
         <View
             android:layout_width="2dp"
@@ -194,21 +195,22 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center">
             <TextView
                 android:id="@+id/user_OutTxt"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text=""
-                android:layout_weight="1"/>
+                android:textSize="25dp"/>
             <TextView
                 android:id="@+id/user_OutTxt2"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text=""
-                android:layout_weight="1"/>
+                android:textSize="25dp"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

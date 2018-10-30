@@ -2,9 +2,11 @@ package com.spacemonster.book.book;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static Activity Main_Activity;
     ViewPager main_Viewpager;
     String id;
+    private Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +71,15 @@ public class MainActivity extends AppCompatActivity {
         main_Viewpager = (ViewPager)findViewById(R.id.main_Textslider);
         ViewPager_TextAdapter viewPagerAdapter = new ViewPager_TextAdapter(this);
         main_Viewpager.setAdapter(viewPagerAdapter);
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TextTimerTask(), 4000, 5000);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("pager", String.valueOf(main_Viewpager.getCurrentItem() + 1));
+                main_Viewpager.setCurrentItem(main_Viewpager.getCurrentItem() + 1);
+                handler.postDelayed(this, 5000);
+            }
+        },5000);
 
     //로그인!!!!
         if(id == null || id.equals("")){
@@ -179,22 +189,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    public class TextTimerTask extends TimerTask{
-        @Override
-        public void run() {
-            MainActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if(main_Viewpager.getCurrentItem() ==0){
-                        main_Viewpager.setCurrentItem(1);
-                    }
-                    else {
-                        main_Viewpager.setCurrentItem(0);
-                    }
-                }
-            });
-        }
-    }
-
 
     }

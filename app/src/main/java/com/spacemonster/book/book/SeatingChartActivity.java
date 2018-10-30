@@ -25,13 +25,13 @@ public class SeatingChartActivity extends AppCompatActivity {
     private Spinner spinner;
     private ImageView imageView;
     private LinearLayout seat_Layout;
-
+    private Intent intent_seat1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seating_chart);
 
-        Intent intent_Seat = getIntent();
+        final Intent intent_Seat = getIntent();
         text1 = intent_Seat.getStringExtra("ID");
 
         //뒤로가기

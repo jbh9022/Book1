@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#D81B60</color>
     <color name="maincolor">#04382c</color>
     <color name="color2">#edc6c5</color>
@@ -10,5 +10,5 @@
     <color name="blue">#0000ff</color>
     <color name="line">#ab9c5b</color>
     <color name="button">#f4e7bd</color>
-    f4e7bd
+    00574B
 </resources>

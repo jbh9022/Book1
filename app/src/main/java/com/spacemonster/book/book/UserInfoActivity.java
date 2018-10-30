@@ -82,6 +82,7 @@ public class UserInfoActivity extends AppCompatActivity {
 //        newdate1 = dateFormat1.format(newdate);
 
         fetchAsyncPosts();
+//        fetchAsyncPosts2();
 
         txt1 = (TextView) findViewById(id.user_txt1);
         txt2 = (TextView) findViewById(id.user_txt2);
