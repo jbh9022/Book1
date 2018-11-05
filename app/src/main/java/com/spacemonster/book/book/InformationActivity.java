@@ -6,23 +6,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class InformationActivity extends AppCompatActivity {
 
-//    private Button inform_btn;
-private LinearLayout inform_Layout;
+@BindView(R.id.inform_layout) LinearLayout inform_Layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
-//        inform_btn = (Button)findViewById(R.id.inform_btn1);
-        inform_Layout = (LinearLayout)findViewById(R.id.inform_layout);
+        ButterKnife.bind(this);
 
-
-        inform_Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+    }
+    @OnClick(R.id.inform_layout)
+    public void info_check(){
+        finish();
     }
 }

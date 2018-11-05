@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.spacemonster.book.book">
 
-    <uses-permission android:name="android.permission.INTERNET">
-    </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -19,13 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".InformationActivity" />
         <activity android:name=".SeatingChartActivity" />
         <activity android:name=".UserInfoActivity" />
-        <activity android:name=".userSet1Activity" />
-
+        <activity android:name=".seatsetActivity" />
+        <activity android:name=".AddseatActivity"></activity>
     </application>
 
 </manifest>

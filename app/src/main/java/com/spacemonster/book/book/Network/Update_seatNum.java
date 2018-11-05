@@ -8,26 +8,19 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Insert extends AsyncTask<String, Void, String> {
+public class Update_seatNum extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... strings) {
 
-        String id = strings[0];
-        String seatnum = strings[1];
-        String date = strings[2];
-        String date2 = strings[3];
-        String nowSeat = strings[4];
+        String seatNum = strings[0];
+        String id = strings[1];
 
-        String link = Api.INSERT_POST;
+        String link = Api.UPDATESEAT_POST;
 
         OkHttpClient client = new OkHttpClient();
-
         RequestBody formBody = new FormBody.Builder()
+                .add("list_seatNum", seatNum)
                 .add("ID", id)
-                .add("list_seatNum", seatnum)
-                .add("list_date", date)
-                .add("list_date2", date2)
-                .add("list_in_out", nowSeat)
                 .build();
 
         Request request = new Request.Builder()

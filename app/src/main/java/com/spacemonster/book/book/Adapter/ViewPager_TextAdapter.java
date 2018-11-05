@@ -16,7 +16,7 @@ public class ViewPager_TextAdapter extends PagerAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
     private String[] textSet = {"(공지) Test 공지 입니다. Test 공지 입니다."
-    ,"(공지) Test 공지 2 입니다. Test 공지 2 입니다."};
+                            ,"(공지) Test 공지 2 입니다. Test 공지 2 입니다."};
     private int pos = 0;
     public ViewPager_TextAdapter(Context context) {
         this.context = context;
@@ -35,13 +35,6 @@ public class ViewPager_TextAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-//        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View view = layoutInflater.inflate(R.layout.custom_main_textslider, null);
-//        TextView textView = (TextView)view.findViewById(R.id.main_customText);
-//        textView.setText(textSet[position]);
-////        textView.setSelected(true);
-//        ViewPager vp = (ViewPager)container;
-//        vp.addView(view, 0);
         TextView text = new TextView(context);
         ((ViewPager)container).addView(text);
         text.setText(textSet[pos]);

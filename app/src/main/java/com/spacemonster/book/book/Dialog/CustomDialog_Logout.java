@@ -1,4 +1,4 @@
-package com.spacemonster.book.book;
+package com.spacemonster.book.book.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,10 +8,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class CustomDialog {
+import com.spacemonster.book.book.MainActivity;
+import com.spacemonster.book.book.R;
+
+public class CustomDialog_Logout {
     private Context context;
 
-    public CustomDialog(Context context) {
+    public CustomDialog_Logout(Context context) {
         this.context = context;
     }
 
@@ -23,7 +26,6 @@ public class CustomDialog {
         dlg.show();
         final Button okbtn = (Button) dlg.findViewById(R.id.logout_okButton);
         final Button cancelbtn = (Button) dlg.findViewById(R.id.logout_cancelButton);
-
 
         okbtn.setOnClickListener(new View.OnClickListener() {
             @Override

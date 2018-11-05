@@ -1,17 +1,19 @@
-package com.spacemonster.book.book;
+package com.spacemonster.book.book.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class CustomDialogEnd {
+import com.spacemonster.book.book.MainActivity;
+import com.spacemonster.book.book.R;
+
+public class CustomDialog_End {
     private Context context;
 
-    public CustomDialogEnd(Context context) {
+    public CustomDialog_End(Context context) {
         this.context = context;
     }
 
