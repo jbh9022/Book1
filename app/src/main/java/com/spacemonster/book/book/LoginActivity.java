@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -39,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.login_Btn) Button userLoginbtn;
     @BindView(R.id.login_Txt1) TextView hiddenTxt1;
     @BindView(R.id.login_Txt2) TextView hiddenTxt2;
-
     String userID_txt;
     String userPass_txt;
     String logindate;
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         userArrayList = new ArrayList<>();
 
+        //로그인 버튼
         userLoginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,10 +78,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    // 외부 화면클릭시 키보드 내리기
+    @OnClick(R.id.login_BaseLayout)
+    public void LayoutClick(){
+        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(userId.getWindowToken(),0);
+        imm.hideSoftInputFromWindow(userPass.getWindowToken(),0);
+    }
+
     public void checkID(){
         GetUser user = new GetUser();
         user.execute(userID_txt,userPass_txt);
     }
+
     public class GetUser extends AsyncTask<String, Void, User[] >{
         @Override
         protected User[] doInBackground(String... strings) {

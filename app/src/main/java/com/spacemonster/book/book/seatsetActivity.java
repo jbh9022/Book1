@@ -9,7 +9,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.AdapterView;
+import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -20,12 +20,15 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.spacemonster.book.book.Dialog.CustomDialog_Notice;
 import com.spacemonster.book.book.Modle.Seat;
 import com.spacemonster.book.book.Network.Api;
+import com.spacemonster.book.book.Network.Update_Another;
 import com.spacemonster.book.book.Network.Update_seatNum;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,11 +48,11 @@ public class seatsetActivity extends AppCompatActivity {
     @BindView(R.id.seatset_txt1) TextView seatset_Txt1;
     @BindView(R.id.seatset_txt2) TextView seatset_Txt2;
 
-    private String[] seatset={"1","2","3","4","5","6","7","8","9","10",
-                                "11","12","13","14","15","16","17","18","19","20",
-                                "21","22","23","24","25","26","27","28","29","30",
-                                "31","32","33","34","35","36","37","38","39","40",
-                                "41","42","43","44","45","46","47","48","49","50"};
+    private String[] seatset={"30","31","32","33","34","35","36","37","38","39",
+                              "40","41","42","43","44","45","46","47","48","49",
+                              "50","51","52","53","54","55","56","57","58","59",
+                              "60","61","62","63","64","65","66","67","68","69",
+                              "70","71","72","73","74","75","76","77","78","79"};
     private String selectseat;
     private ArrayList<Seat> checkArray;
 
@@ -58,6 +61,7 @@ public class seatsetActivity extends AppCompatActivity {
     private String seat_time;
 
     private WebSettings wSetting;
+//    private ArrayList<String> numbers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,18 +76,25 @@ public class seatsetActivity extends AppCompatActivity {
         seatset_Web.setWebChromeClient(new WebChromeClient());
         wSetting = seatset_Web.getSettings();
         wSetting.setJavaScriptEnabled(true);
+        wSetting.setLoadWithOverviewMode(true);
+        wSetting.setUseWideViewPort(true);
+
+       ArrayAdapter<String> adapter;
+       adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, seatset);
+       seatset_Spinner.setAdapter(adapter);
 
         seatset_Web.loadUrl("http://jbh9022.cafe24.com/seatlist2.php");
         wSetting.setBuiltInZoomControls(true);
-        wSetting.setSupportZoom(true);
-
+        wSetting.setSupportZoom(false);
+        wSetting.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        //화면전환시 같은 뷰내에서 전환
+        seatset_Web.setWebViewClient(new seatsetActivity.NoticeWebViewClient());
         wSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        wSetting.setLoadWithOverviewMode(true);
-        seatset_Txt1.setText(seatNumber);
-        ArrayAdapter<String> adapter;
-        adapter = new ArrayAdapter<String>(seatsetActivity.this, R.layout.support_simple_spinner_dropdown_item, seatset);
-        seatset_Spinner.setAdapter(adapter);
 
+        seatset_Web.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        seatset_Txt1.setText(seatNumber);
+
+        //뒤로가기버튼
         seatset_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,9 +102,11 @@ public class seatsetActivity extends AppCompatActivity {
             }
         });
 
+        //자리변경
         seatset_changeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 selectseat = seatset_Spinner.getSelectedItem().toString();
                 checkSeat();
             }
@@ -103,7 +116,7 @@ public class seatsetActivity extends AppCompatActivity {
     private void checkSeat(){
         checkArray = new ArrayList<Seat>();
         GetSeatcheck check = new GetSeatcheck();
-        check.execute(Api.GETCHECKSEAT_POST, selectseat);
+        check.execute(Api.GETCHECKSEAT_POST, selectseat, seat_time);
     }
    public class GetSeatcheck extends AsyncTask<String, Void, Seat[] > {
 
@@ -111,9 +124,11 @@ public class seatsetActivity extends AppCompatActivity {
        protected Seat[] doInBackground(String... strings) {
            String url = strings[0];
            String seatNumber = strings[1];
+           String seattime = strings[2];
 
            RequestBody formBody = new FormBody.Builder()
                    .add("list_seatNum", seatNumber)
+                   .add("list_date", seattime)
                    .build();
 
            OkHttpClient client = new OkHttpClient();
@@ -138,8 +153,9 @@ public class seatsetActivity extends AppCompatActivity {
        }
        private void UpdateSeat(){
            Update_seatNum update_seat = new Update_seatNum();
-           update_seat.execute(selectseat,seat_userID);
+           update_seat.execute(selectseat,seat_userID,seat_time, "입실");
        }
+
        @Override
        protected void onPostExecute(Seat[] seats) {
            super.onPostExecute(seats);
@@ -157,7 +173,8 @@ public class seatsetActivity extends AppCompatActivity {
            }
             else {
                UpdateSeat();
-
+//               UpdateOutting();
+//               UpdateComback();
                Intent in2= new Intent(seatsetActivity.this, UserInfoActivity.class);
                in2.putExtra("ID",seat_userID);
                in2.putExtra("Time", seat_time);
@@ -169,5 +186,13 @@ public class seatsetActivity extends AppCompatActivity {
            }
        }
    }
-
+    //화면전환시 같은 뷰내에서 전환
+    class  NoticeWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String request) {
+//            return super.shouldOverrideUrlLoading(view, request);
+            view.loadUrl(request);
+            return true;
+        }
+    }
 }

@@ -14,7 +14,6 @@
         android:text="종료하시겠습니까?"
         android:background="@color/maincolor"/>
 
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

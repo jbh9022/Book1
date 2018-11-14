@@ -1,22 +1,21 @@
 package com.spacemonster.book.book;
 
 import android.content.Intent;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.spacemonster.book.book.Dialog.CustomDialog_Notice;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +32,6 @@ public class SeatingChartActivity extends AppCompatActivity {
 
     private WebSettings settings;
 
-    private Intent intent_seat1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,18 +45,17 @@ public class SeatingChartActivity extends AppCompatActivity {
         seat_Webview.setWebChromeClient(new WebChromeClient());
         settings = seat_Webview.getSettings();
         settings.setJavaScriptEnabled(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
+
         settings.setBuiltInZoomControls(true);
-        settings.setSupportZoom(true);
-//        settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        settings.setSupportZoom(false);
+        settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
 
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        settings.setLoadWithOverviewMode(true);
+        seat_Webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
 
-        //뒤로가기
-       seat_Layout = (LinearLayout)findViewById(R.id.seat_Laout) ;
-
-        seat_Spinner = (Spinner)findViewById(R.id.seat_spinner);
-
+        //뒤로가기 버튼
         seat_Layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,12 +66,20 @@ public class SeatingChartActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter;
         adapter = new ArrayAdapter<String>(SeatingChartActivity.this, R.layout.support_simple_spinner_dropdown_item, seatingList);
         seat_Spinner.setAdapter(adapter);
+        //스피너 선택
         seat_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i){
                     case 0:
                         seat_Webview.loadUrl("");
+                        settings.setLoadWithOverviewMode(true);
+                        settings.setUseWideViewPort(true);
+                        settings.setBuiltInZoomControls(true);
+                        settings.setSupportZoom(false);
+                        settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+                        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+                        seat_Webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
                         seat_ok.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -84,11 +89,21 @@ public class SeatingChartActivity extends AppCompatActivity {
                         break;
                     case 1:
                         seat_Webview.loadUrl("http://jbh9022.cafe24.com/seatlist2.php");
-
+                        //화면전환시 같은 뷰내에서 전환
+                        seat_Webview.setWebViewClient(new SeatingChartActivity.NoticeWebViewClient());
+                        settings.setLoadWithOverviewMode(true);
+                        settings.setUseWideViewPort(true);
+                        settings.setBuiltInZoomControls(true);
+                        settings.setSupportZoom(false);
+                        settings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+                        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+                        seat_Webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+                        //버튼 클릭시
                         seat_ok.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(SeatingChartActivity.this, "자유석 선택", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(SeatingChartActivity.this, "자유석 선택", Toast.LENGTH_SHORT).show();
+                                finish();
                             }
                         });
                     break;
@@ -100,5 +115,14 @@ public class SeatingChartActivity extends AppCompatActivity {
             }
         });
 
+    }
+    //같은뷰에서 화면전환(새로고침시)
+    class  NoticeWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String request) {
+//            return super.shouldOverrideUrlLoading(view, request);
+            view.loadUrl(request);
+            return true;
+        }
     }
 }

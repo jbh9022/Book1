@@ -22,6 +22,9 @@ import com.google.gson.JsonParser;
 import com.spacemonster.book.book.Modle.Post;
 import com.spacemonster.book.book.Network.Api;
 import com.spacemonster.book.book.Network.Insert;
+import com.spacemonster.book.book.Network.Insertuser_AnotherData;
+import com.spacemonster.book.book.Network.Update_Another;
+import com.spacemonster.book.book.Network.Update_seatNum;
 
 
 import java.io.IOException;
@@ -124,6 +127,7 @@ public class UserInfoActivity extends AppCompatActivity {
             nowText.setText("외출");
             nowText.setTextColor(Color.parseColor("#0000ff"));
             nowSeatNum = info_userSeatNum.getText().toString();
+            UpOutting();
             inOuting();
         }
         else if(hiddenString.equals("외출") || hiddenString == "외출"){
@@ -149,6 +153,7 @@ public class UserInfoActivity extends AppCompatActivity {
             nowText.setText("입실");
             nowText.setTextColor(Color.parseColor("#000000"));
             nowSeatNum = info_userSeatNum.getText().toString();
+            UpComback();
             inComeback();
         }
         else{
@@ -177,13 +182,24 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     private void inOuting() {
-        Insert outingInsert = new Insert();
+        Insertuser_AnotherData outingInsert = new Insertuser_AnotherData();
         outingInsert.execute(userID, nowSeatNum, inOutingtime, inOutingtime_2, "외출");
+    }
+    //입실 >> 외출
+    private void UpOutting(){
+        Update_Another outtingUpdate = new Update_Another();
+        outtingUpdate.execute("외출",userID, userTime, nowSeatNum);
     }
 
     private void inComeback() {
-        Insert conbackInsert = new Insert();
-        conbackInsert.execute(userID,nowSeatNum, inComebacktime, inComebacktime_2, "복귀");
+        Insertuser_AnotherData combackInsert = new Insertuser_AnotherData();
+        combackInsert.execute(userID,nowSeatNum, inComebacktime, inComebacktime_2, "복귀");
+    }
+
+    //외출 >> 입실
+    private void UpComback(){
+        Update_Another combakcUpdate = new Update_Another();
+        combakcUpdate.execute("입실",userID, userTime, nowSeatNum);
     }
 
     private void inCheckout() {
@@ -191,14 +207,13 @@ public class UserInfoActivity extends AppCompatActivity {
         checkoutInsert.execute(userID, nowSeatNum ,inCheckouttime, inCheckouttime_2, "퇴실");
     }
 
+//정보 불러오기
     public void fetchAsyncPosts() {
         postlist = new ArrayList<>();
         Getjson getjson = new Getjson();
         getjson.execute(Api.GET_POST, userID, userTime);
     }
-    public void CustomDialog_Checkout(){
 
-    }
     public class Getjson extends AsyncTask<String, Void, Post[]> {
 
         @Override
@@ -257,6 +272,15 @@ public class UserInfoActivity extends AppCompatActivity {
                     postlist.clear();
 
                 }
+                else if(sss.equals("외출") || sss == "외출"){
+                    inText.setText(postlist.get(0).getList_date());
+                    inText2.setText(postlist.get(0).getList_date2());
+                    info_userSpace.setText(postlist.get(0).getList_space());
+                    info_userSeatNum.setText(postlist.get(0).getList_seatNum());
+                    nowText.setText(postlist.get(0).getList_in_out());
+                    nowText.setTextColor(Color.BLUE);
+                    postlist.clear();
+                }
                 else {
                     inText.setText(postlist.get(0).getList_date());
                     inText2.setText(postlist.get(0).getList_date2());
@@ -277,7 +301,7 @@ public class UserInfoActivity extends AppCompatActivity {
             }
         }
     }
-
+//퇴실 다이얼로그
     public class CustomDialog_Checkout {
 
         public void collDialog(){
