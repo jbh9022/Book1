@@ -22,6 +22,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.spacemonster.book.book.Dialog.CustomDialog_Notice;
 import com.spacemonster.book.book.Modle.Seat;
+import com.spacemonster.book.book.Modle.SeatNum;
 import com.spacemonster.book.book.Network.Api;
 import com.spacemonster.book.book.Network.Update_Another;
 import com.spacemonster.book.book.Network.Update_seatNum;
@@ -48,20 +49,25 @@ public class seatsetActivity extends AppCompatActivity {
     @BindView(R.id.seatset_txt1) TextView seatset_Txt1;
     @BindView(R.id.seatset_txt2) TextView seatset_Txt2;
 
-    private String[] seatset={"30","31","32","33","34","35","36","37","38","39",
-                              "40","41","42","43","44","45","46","47","48","49",
-                              "50","51","52","53","54","55","56","57","58","59",
-                              "60","61","62","63","64","65","66","67","68","69",
-                              "70","71","72","73","74","75","76","77","78","79"};
+//    private String[] seatset={"30","31","32","33","34","35","36","37","38","39",
+//                              "40","41","42","43","44","45","46","47","48","49",
+//                              "50","51","52","53","54","55","56","57","58","59",
+//                              "60","61","62","63","64","65","66","67","68","69",
+//                              "70","71","72","73","74","75","76","77","78","79"};
     private String selectseat;
     private ArrayList<Seat> checkArray;
 
     private String seatNumber;
     private String seat_userID;
     private String seat_time;
+    private String shopName;
+    private String seatName;
+    private String seaturl;
 
     private WebSettings wSetting;
-//    private ArrayList<String> numbers;
+    private ArrayList<SeatNum> numbers;
+    private ArrayList<String> numArray;
+    ArrayAdapter<String> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,18 +78,19 @@ public class seatsetActivity extends AppCompatActivity {
         seatNumber = intent_seatset.getStringExtra("seatNum");
         seat_userID = intent_seatset.getStringExtra("ID");
         seat_time = intent_seatset.getStringExtra("Time");
+        seatName = intent_seatset.getStringExtra("seatname");
+        shopName = intent_seatset.getStringExtra("shop");
 
+        numArray = new ArrayList<String>();
+
+        GetSeatInfo();
         seatset_Web.setWebChromeClient(new WebChromeClient());
         wSetting = seatset_Web.getSettings();
         wSetting.setJavaScriptEnabled(true);
         wSetting.setLoadWithOverviewMode(true);
         wSetting.setUseWideViewPort(true);
 
-       ArrayAdapter<String> adapter;
-       adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, seatset);
-       seatset_Spinner.setAdapter(adapter);
 
-        seatset_Web.loadUrl("http://jbh9022.cafe24.com/seatlist2.php");
         wSetting.setBuiltInZoomControls(true);
         wSetting.setSupportZoom(false);
         wSetting.setDefaultZoom(WebSettings.ZoomDensity.FAR);
@@ -113,11 +120,69 @@ public class seatsetActivity extends AppCompatActivity {
         });
     }
 
+    private void GetSeatInfo() {
+        numbers = new ArrayList<SeatNum>();
+        GetSeatInfomation info=  new GetSeatInfomation();
+        info.execute(shopName, seatName);
+    }
+    public class GetSeatInfomation extends AsyncTask<String, Void, SeatNum[]> {
+        @Override
+        protected SeatNum[] doInBackground(String... strings) {
+            String shop = strings[0];
+            String seatname = strings[1];
+            String url = Api.GET_POSTSEATNUM;
+
+            RequestBody formBody = new FormBody.Builder()
+                    .add("shop", shop)
+                    .add("seatname", seatname)
+                    .build();
+
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(formBody)
+                    .build();
+
+            try {
+                Response responses = client.newCall(request).execute();
+
+                Gson gson = new Gson();
+                JsonParser parser = new JsonParser();
+                JsonElement rootObject = parser.parse(responses.body().charStream()).getAsJsonObject().get("seatNumber");
+
+                SeatNum[] seatNums = gson.fromJson(rootObject, SeatNum[].class);
+
+                return seatNums;
+            } catch (IOException e) {
+                Log.d("FetchPostsTask", e.getMessage());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(SeatNum[] seatNums) {
+            super.onPostExecute(seatNums);
+            if (seatNums.length > 0) {
+                for (SeatNum seatNum : seatNums) {
+                    numbers.add(seatNum);
+                }
+                seaturl = numbers.get(0).getShopMap();
+                for(int i =0; i<numbers.size(); i++){
+                    numArray.add(numbers.get(i).getSeatNum());
+                }
+            }
+            adapter = new ArrayAdapter<String>(seatsetActivity.this, R.layout.support_simple_spinner_dropdown_item, numArray);
+            seatset_Spinner.setAdapter(adapter);
+            seatset_Web.loadUrl(seaturl);
+        }
+    }
     private void checkSeat(){
         checkArray = new ArrayList<Seat>();
         GetSeatcheck check = new GetSeatcheck();
         check.execute(Api.GETCHECKSEAT_POST, selectseat, seat_time);
     }
+
    public class GetSeatcheck extends AsyncTask<String, Void, Seat[] > {
 
        @Override

@@ -61,7 +61,7 @@ public class UserInfoActivity extends AppCompatActivity {
     @BindView(id.user_OutTxt2) TextView outText2;
     @BindView(id.user_NowTxt) TextView nowText;
     @BindView(id.user_hiddenTxt) TextView hiddenTxt;
-
+    @BindView(id.user_hiddenTxt2) TextView hiddenTxt2;
     private String userID;
     private String userTime;
     private ArrayList<Post> postlist;
@@ -72,6 +72,8 @@ public class UserInfoActivity extends AppCompatActivity {
     private String inCheckouttime;
     private String inCheckouttime_2;
     private String nowSeatNum;
+    private String userInfo_space;
+    private String shopname;
     public static Activity userInfo_Activity;
 
 //    String sss;
@@ -127,6 +129,8 @@ public class UserInfoActivity extends AppCompatActivity {
             nowText.setText("외출");
             nowText.setTextColor(Color.parseColor("#0000ff"));
             nowSeatNum = info_userSeatNum.getText().toString();
+            userInfo_space = info_userSpace.getText().toString();
+            shopname = hiddenTxt2.getText().toString();
             UpOutting();
             inOuting();
         }
@@ -153,6 +157,8 @@ public class UserInfoActivity extends AppCompatActivity {
             nowText.setText("입실");
             nowText.setTextColor(Color.parseColor("#000000"));
             nowSeatNum = info_userSeatNum.getText().toString();
+            userInfo_space = info_userSpace.getText().toString();
+            shopname = hiddenTxt2.getText().toString();
             UpComback();
             inComeback();
         }
@@ -164,26 +170,34 @@ public class UserInfoActivity extends AppCompatActivity {
     //좌석변경
     @OnClick(id.user_Layout2)
     public void SeatChange(){
-        String hiddenString = nowText.getText().toString();
-        if(hiddenString.equals("입실") || hiddenString == "입실"){
-            nowSeatNum=info_userSeatNum.getText().toString();
-            Intent intent_seat = new Intent(UserInfoActivity.this, seatsetActivity.class);
-            intent_seat.putExtra("seatNum", nowSeatNum);
-            intent_seat.putExtra("ID",userID);
-            intent_seat.putExtra("Time", userTime);
-            startActivity(intent_seat);
-        }
-        else if(hiddenString.equals("외출") || hiddenString == "외출"){
-            Toast.makeText(UserInfoActivity.this, "잘못된 입력입니다.", Toast.LENGTH_SHORT).show();
+        String space = info_userSpace.getText().toString();
+        shopname = hiddenTxt2.getText().toString();
+        if(space.equals("자유석") || space == "자유석") {
+            String hiddenString = nowText.getText().toString();
+            if (hiddenString.equals("입실") || hiddenString == "입실") {
+                nowSeatNum = info_userSeatNum.getText().toString();
+                Intent intent_seat = new Intent(UserInfoActivity.this, seatsetActivity.class);
+                intent_seat.putExtra("seatNum", nowSeatNum);
+                intent_seat.putExtra("ID", userID);
+                intent_seat.putExtra("Time", userTime);
+                intent_seat.putExtra("seatname", space);
+                intent_seat.putExtra("shop", shopname);
+                startActivity(intent_seat);
+
+            } else if (hiddenString.equals("외출") || hiddenString == "외출") {
+                Toast.makeText(UserInfoActivity.this, "잘못된 입력입니다.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(UserInfoActivity.this, "잘못된 입력입니다.", Toast.LENGTH_SHORT).show();
+            }
         }
         else{
-            Toast.makeText(UserInfoActivity.this, "잘못된 입력입니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UserInfoActivity.this,"자유석이 아닐경우 좌석변경이 불가능 합니다.", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void inOuting() {
         Insertuser_AnotherData outingInsert = new Insertuser_AnotherData();
-        outingInsert.execute(userID, nowSeatNum, inOutingtime, inOutingtime_2, "외출");
+        outingInsert.execute(userID, shopname, userInfo_space, nowSeatNum, inOutingtime, inOutingtime_2, "외출");
     }
     //입실 >> 외출
     private void UpOutting(){
@@ -193,7 +207,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private void inComeback() {
         Insertuser_AnotherData combackInsert = new Insertuser_AnotherData();
-        combackInsert.execute(userID,nowSeatNum, inComebacktime, inComebacktime_2, "복귀");
+        combackInsert.execute(userID, shopname, userInfo_space, nowSeatNum, inComebacktime, inComebacktime_2, "복귀");
     }
 
     //외출 >> 입실
@@ -204,7 +218,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private void inCheckout() {
         Insert checkoutInsert = new Insert();
-        checkoutInsert.execute(userID, nowSeatNum ,inCheckouttime, inCheckouttime_2, "퇴실");
+        checkoutInsert.execute(userID, shopname, userInfo_space ,nowSeatNum ,inCheckouttime, inCheckouttime_2, "퇴실");
     }
 
 //정보 불러오기
@@ -259,6 +273,7 @@ public class UserInfoActivity extends AppCompatActivity {
                     postlist.add(post);
                 }
                 hiddenTxt.setText(postlist.get(0).getList_in_out());
+
                 String sss=hiddenTxt.getText().toString();
                 if(sss.equals("퇴실") || sss == "퇴실") {
                     outText.setText(postlist.get(0).getList_date());
@@ -269,6 +284,7 @@ public class UserInfoActivity extends AppCompatActivity {
                     nowText.setTextColor(Color.parseColor("#ff0000"));
                     inText.setText(postlist.get(1).getList_date());
                     inText2.setText(postlist.get(1).getList_date2());
+                    hiddenTxt2.setText(postlist.get(0).getShop());
                     postlist.clear();
 
                 }
@@ -279,6 +295,7 @@ public class UserInfoActivity extends AppCompatActivity {
                     info_userSeatNum.setText(postlist.get(0).getList_seatNum());
                     nowText.setText(postlist.get(0).getList_in_out());
                     nowText.setTextColor(Color.BLUE);
+                    hiddenTxt2.setText(postlist.get(0).getShop());
                     postlist.clear();
                 }
                 else {
@@ -287,6 +304,7 @@ public class UserInfoActivity extends AppCompatActivity {
                     info_userSpace.setText(postlist.get(0).getList_space());
                     info_userSeatNum.setText(postlist.get(0).getList_seatNum());
                     nowText.setText(postlist.get(0).getList_in_out());
+                    hiddenTxt2.setText(postlist.get(0).getShop());
                     postlist.clear();
                 }
 
@@ -298,6 +316,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 info_userSpace.setText("");
                 info_userSeatNum.setText("");
                 nowText.setText("");
+                hiddenTxt2.setText("");
             }
         }
     }
@@ -324,7 +343,8 @@ public class UserInfoActivity extends AppCompatActivity {
                     nowText.setText("퇴실");
                     nowText.setTextColor(Color.parseColor("#FF0000"));
                     nowSeatNum = info_userSeatNum.getText().toString();
-
+                    userInfo_space = info_userSpace.getText().toString();
+                    shopname = hiddenTxt2.getText().toString();
                     inCheckout();
                     fetchAsyncPosts();
 

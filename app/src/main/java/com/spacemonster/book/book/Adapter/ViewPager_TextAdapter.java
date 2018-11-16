@@ -1,6 +1,7 @@
 package com.spacemonster.book.book.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spacemonster.book.book.Dialog.CustomDialog_Notice;
+import com.spacemonster.book.book.NoticeActivity;
 import com.spacemonster.book.book.R;
 
 public class ViewPager_TextAdapter extends PagerAdapter {
@@ -45,7 +47,7 @@ public class ViewPager_TextAdapter extends PagerAdapter {
 
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull final ViewGroup container, int position) {
 //        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //        View view = layoutInflater.inflate(R.layout.custom_textlayout, null);
 
@@ -64,8 +66,10 @@ public class ViewPager_TextAdapter extends PagerAdapter {
             @Override
             public void onClick(View view) {
 //                Toast.makeText(context, "toast", Toast.LENGTH_SHORT).show();
-                CustomDialog_Notice notice = new CustomDialog_Notice(context, phoneWidth, phoneHeigth);
-                notice.CallDialog_Notice();
+//                CustomDialog_Notice notice = new CustomDialog_Notice(context, phoneWidth, phoneHeigth);
+//                notice.CallDialog_Notice();
+                Intent noticeInent = new Intent(context, NoticeActivity.class);
+                context.startActivity(noticeInent);
             }
         });
         return text;

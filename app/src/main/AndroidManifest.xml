@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.spacemonster.book.book">
 
@@ -19,13 +19,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".InformationActivity" />
         <activity android:name=".SeatingChartActivity" />
         <activity android:name=".UserInfoActivity" />
         <activity android:name=".seatsetActivity" />
-        <activity android:name=".AddseatActivity"></activity>
+        <activity android:name=".AddseatActivity" />
+        <activity android:name=".NoticeActivity"></activity>
     </application>
 
 </manifest>

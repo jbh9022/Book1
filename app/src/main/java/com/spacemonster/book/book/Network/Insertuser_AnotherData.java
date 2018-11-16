@@ -13,10 +13,12 @@ public class Insertuser_AnotherData extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
 
         String id = strings[0];
-        String seatnum = strings[1];
-        String date = strings[2];
-        String date2 = strings[3];
-        String nowSeat = strings[4];
+        String shop = strings[1];
+        String seatspace = strings[2];
+        String seatnum = strings[3];
+        String date = strings[4];
+        String date2 = strings[5];
+        String nowSeat = strings[6];
 
         String link = Api.INSERT2_POST;
 
@@ -24,6 +26,8 @@ public class Insertuser_AnotherData extends AsyncTask<String, Void, String> {
 
         RequestBody formBody = new FormBody.Builder()
                 .add("ID", id)
+                .add("shop", shop)
+                .add("list_space", seatspace)
                 .add("list2_seatNum", seatnum)
                 .add("list2_date", date)
                 .add("list2_date2", date2)

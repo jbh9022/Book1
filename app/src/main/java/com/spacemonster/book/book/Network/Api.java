@@ -9,5 +9,7 @@ public class Api {
     public static final String UPDATESEAT_POST = BASE_URL + "/updateList.php";
     public static final String CHECKUSER_POST = BASE_URL + "/checkUser.php";
     public static final String UPDATESEATAN_POST = BASE_URL + "/updateList2.php";
+    public static final String GET_POSTSEATNUM = BASE_URL + "/getjsonNum.php";
+    public static final String GET_POSTCHART = BASE_URL + "/getjsonchart.php";
 //    http://jbh9022.cafe24.com/updateList.php
 }

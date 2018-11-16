@@ -84,6 +84,7 @@ public class SeatingChartActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Toast.makeText(SeatingChartActivity.this, "좌석을 선택하세요", Toast.LENGTH_SHORT).show();
+                                finish();
                             }
                         });
                         break;

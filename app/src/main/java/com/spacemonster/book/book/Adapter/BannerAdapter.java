@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.spacemonster.book.book.R;
 
 import java.util.ArrayList;
@@ -19,13 +21,14 @@ public class BannerAdapter extends PagerAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
     private int pos;
-    private int[] img ={R.drawable.mark1, R.drawable.banner01, R.drawable.banner02};
+    private String banner1 = "http://jbh9022.cafe24.com/img/banner03.jpg";
+    private String banner2 = "http://jbh9022.cafe24.com/img/banner02.jpg";
     ArrayList<Object> arrayList = new ArrayList<>();
     public BannerAdapter(Context context) {
         this.context = context;
-        for(pos =0; pos<img.length; pos++){
-            arrayList.add(img[pos]);
-        }
+        arrayList.add(R.drawable.mark1);
+        arrayList.add(banner1);
+        arrayList.add(banner2);
     }
 
     @Override
@@ -45,14 +48,17 @@ public class BannerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.custom_banner, null);
         ImageView banner = (ImageView) view.findViewById(R.id.banner_Img);
-
+        RequestOptions options = new RequestOptions().fitCenter();
 
         if(position == 0){
             banner.setImageResource((Integer) arrayList.get(position));
             banner.setScaleType(ImageView.ScaleType.CENTER);
         }
         else {
-            banner.setImageResource((Integer) arrayList.get(position));
+            Glide.with(context).load(arrayList.get(position)).apply(options).into(banner);
+
+//            Picasso.get().load(String.valueOf(arrayList.get(position))).into(banner);
+//            banner.setImageResource((Integer) arrayList.get(position));
             banner.setScaleType(ImageView.ScaleType.FIT_XY);
         }
 

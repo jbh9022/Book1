@@ -1,6 +1,7 @@
 package com.spacemonster.book.book;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Point;
@@ -23,6 +24,7 @@ import com.spacemonster.book.book.Adapter.BannerAdapter;
 import com.spacemonster.book.book.Adapter.ViewPager_TextAdapter;
 import com.spacemonster.book.book.Dialog.CustomDialog_End;
 import com.spacemonster.book.book.Dialog.CustomDialog_Logout;
+import com.spacemonster.book.book.Dialog.CustomDialog_info;
 import com.spacemonster.book.book.databinding.ActivityMainBinding;
 
 
@@ -35,20 +37,15 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String[] txtRes = new String[]{"Purple"};
-    private int[] colorRes = new int[]{0xff9C27B0};
 
     public static Activity Main_Activity;
     ActivityMainBinding mainLayout;
     String id;
     private Handler handler = new Handler();
-    private Handler handler2 = new Handler();
     int phoneWidth;
     int phoneHeigth;
-    private int dotscount;
-    private ImageView[] dots;
     Timer timer;
-//    private BannerAdapter bannerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.mainBanner.setAdapter(bannerAdapter);
         timer = new Timer();
         timer.scheduleAtFixedRate(new ImgTimer(), 10000, 10000);
-        //배너위치dot
+        //배너위 dot
         IndicatorChange();
 
         //공지 뷰
@@ -151,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-
         //좌석정보
         mainLayout.mainImg1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,8 +162,11 @@ public class MainActivity extends AppCompatActivity {
         mainLayout.mainImg3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent_Inform = new Intent(MainActivity.this, InformationActivity.class);
-                startActivity(intent_Inform);
+               CustomDialog_info dialog = new CustomDialog_info(MainActivity.this, phoneWidth, phoneHeigth);
+               dialog.Callinfo();
+
+//                Intent intent_Inform = new Intent(MainActivity.this, InformationActivity.class);
+//                startActivity(intent_Inform);
             }
         });
 
@@ -178,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         CustomDialog_End customDialogEnd = new CustomDialog_End(MainActivity.this);
         customDialogEnd.callDialog();
     }
+
     //dot 구성
     public void IndicatorChange(){
         mainLayout.mainBanner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -211,6 +211,5 @@ public class MainActivity extends AppCompatActivity {
           });
         }
     }
-
 
     }
